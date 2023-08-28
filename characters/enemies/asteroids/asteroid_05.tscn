@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://b12y1mtt1wy1q"]
+
+[ext_resource type="Script" path="res://scripts/enemies/asteroids/asteroid.gd" id="1_5upuf"]
+[ext_resource type="Texture2D" uid="uid://2mnvryexetc6" path="res://resources/asteroids/asteroid_05.png" id="2_idwbs"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_706cc"]
+radius = 17.0
+height = 34.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5h78p"]
+radius = 21.0
+height = 44.0
+
+[node name="asteroid" type="CharacterBody2D"]
+collision_layer = 2
+script = ExtResource("1_5upuf")
+
+[node name="sprite" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_idwbs")
+
+[node name="collision_shape" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_706cc")
+
+[node name="hitbox" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 32
+
+[node name="collision_shape" type="CollisionShape2D" parent="hitbox"]
+shape = SubResource("CapsuleShape2D_5h78p")
+
+[node name="visibility_notifier" type="VisibleOnScreenNotifier2D" parent="."]
+
+[connection signal="body_entered" from="hitbox" to="." method="on_hitbox_body_entered"]
+[connection signal="screen_exited" from="visibility_notifier" to="." method="on_asteroid_visibility_notifier_screen_exited"]
