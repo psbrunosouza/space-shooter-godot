@@ -1,0 +1,83 @@
+[gd_scene load_steps=9 format=3 uid="uid://mm526ovr34j7"]
+
+[ext_resource type="Script" path="res://characters/enemies/asteroids/scripts/asteroid_01.gd" id="1_3xc46"]
+[ext_resource type="Texture2D" uid="uid://cq35qj77vvexl" path="res://resources/asteroids/asteroid_01.png" id="2_78fjl"]
+[ext_resource type="Material" uid="uid://crbsx65ef4n10" path="res://shaders/asteroid_01.tres" id="2_wp85c"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ciqh6"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xmtaw"]
+radius = 13.0
+
+[sub_resource type="Animation" id="Animation_w0lxg"]
+resource_name = "flash"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sprite:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_nef8n"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sprite:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_igu50"]
+_data = {
+"RESET": SubResource("Animation_nef8n"),
+"flash": SubResource("Animation_w0lxg")
+}
+
+[node name="asteroid" type="CharacterBody2D"]
+collision_layer = 2
+script = ExtResource("1_3xc46")
+
+[node name="sprite" type="Sprite2D" parent="."]
+texture_filter = 1
+material = ExtResource("2_wp85c")
+texture = ExtResource("2_78fjl")
+
+[node name="collision_shape" type="CollisionShape2D" parent="."]
+visible = false
+shape = SubResource("CircleShape2D_ciqh6")
+debug_color = Color(1, 0, 0.701961, 0.419608)
+
+[node name="hitbox" type="Area2D" parent="."]
+visible = false
+collision_layer = 16
+collision_mask = 32
+
+[node name="collision_shape" type="CollisionShape2D" parent="hitbox"]
+shape = SubResource("CircleShape2D_xmtaw")
+
+[node name="visibility_notifier" type="VisibleOnScreenNotifier2D" parent="."]
+visible = false
+
+[node name="spawn_hit" type="Node2D" parent="."]
+visible = false
+
+[node name="hit_flash_animation" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_igu50")
+}
+
+[connection signal="body_entered" from="hitbox" to="." method="on_hitbox_body_entered"]
+[connection signal="screen_exited" from="visibility_notifier" to="." method="on_asteroid_visibility_notifier_screen_exited"]

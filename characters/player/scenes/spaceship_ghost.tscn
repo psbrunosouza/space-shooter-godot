@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://lmslgo0i4utq"]
+
+[ext_resource type="Script" path="res://characters/player/scripts/spaceship_ghost.gd" id="2_pt3d1"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_s3ne5"]
+
+[node name="sprite" type="AnimatedSprite2D"]
+modulate = Color(100, 100, 100, 1)
+sprite_frames = SubResource("SpriteFrames_s3ne5")
+script = ExtResource("2_pt3d1")

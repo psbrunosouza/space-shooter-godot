@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://dgx8jwni6c5bh"]
+
+[ext_resource type="Script" path="res://levels/level_01/scripts/background.gd" id="1_onuik"]
+[ext_resource type="Texture2D" uid="uid://cxgreayuw7dng" path="res://resources/space/space_03.png" id="2_ma1sj"]
+[ext_resource type="Texture2D" uid="uid://bu1iq4tv08nmp" path="res://resources/space/space_01.png" id="3_qbtpo"]
+[ext_resource type="Texture2D" uid="uid://i1au262ovs3c" path="res://resources/space/space_02.png" id="4_pmutl"]
+
+[node name="background" type="ParallaxBackground"]
+script = ExtResource("1_onuik")
+
+[node name="nebula" type="ParallaxLayer" parent="."]
+motion_mirroring = Vector2(640, 360)
+
+[node name="sprite" type="Sprite2D" parent="nebula"]
+texture = ExtResource("2_ma1sj")
+centered = false
+
+[node name="starts" type="ParallaxLayer" parent="."]
+motion_scale = Vector2(0.96, 0.96)
+motion_mirroring = Vector2(640, 360)
+
+[node name="sprite" type="Sprite2D" parent="starts"]
+texture = ExtResource("3_qbtpo")
+centered = false
+
+[node name="big_stars" type="ParallaxLayer" parent="."]
+motion_scale = Vector2(0.91, 0.91)
+motion_mirroring = Vector2(640, 360)
+
+[node name="sprite" type="Sprite2D" parent="big_stars"]
+texture = ExtResource("4_pmutl")
+centered = false

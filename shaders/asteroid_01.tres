@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://crbsx65ef4n10"]
+
+[ext_resource type="Shader" uid="uid://clqgmkdcicgh4" path="res://shaders/hit_effect.tres" id="1_2mofy"]
+
+[resource]
+resource_local_to_scene = true
+shader = ExtResource("1_2mofy")
+shader_parameter/BooleanParameter = false
+shader_parameter/tint = Color(1, 1, 1, 1)

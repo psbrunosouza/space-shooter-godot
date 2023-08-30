@@ -1,0 +1,121 @@
+[gd_scene load_steps=15 format=3 uid="uid://t0cvaldpu21j"]
+
+[ext_resource type="Script" path="res://characters/player/scripts/spaceship.gd" id="1_i27ud"]
+[ext_resource type="Texture2D" uid="uid://q7iccct3vs42" path="res://resources/spaceships/spaceshp-main.png" id="2_ojwkv"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ohn3b"]
+atlas = ExtResource("2_ojwkv")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_owp02"]
+atlas = ExtResource("2_ojwkv")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mg81q"]
+atlas = ExtResource("2_ojwkv")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qxqof"]
+atlas = ExtResource("2_ojwkv")
+region = Rect2(448, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tcw3c"]
+atlas = ExtResource("2_ojwkv")
+region = Rect2(512, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y5qse"]
+atlas = ExtResource("2_ojwkv")
+region = Rect2(576, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yknve"]
+atlas = ExtResource("2_ojwkv")
+region = Rect2(640, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h82lw"]
+atlas = ExtResource("2_ojwkv")
+region = Rect2(704, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_017ju"]
+atlas = ExtResource("2_ojwkv")
+region = Rect2(768, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aw7ua"]
+atlas = ExtResource("2_ojwkv")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_krfcw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ohn3b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_owp02")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mg81q")
+}],
+"loop": true,
+"name": &"move_forward",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qxqof")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tcw3c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y5qse")
+}],
+"loop": true,
+"name": &"move_left",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yknve")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h82lw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_017ju")
+}],
+"loop": true,
+"name": &"move_right",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aw7ua")
+}],
+"loop": true,
+"name": &"no_fuel",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ynemx"]
+radius = 10.4403
+
+[node name="ship" type="CharacterBody2D"]
+collision_mask = 4
+script = ExtResource("1_i27ud")
+
+[node name="sprite" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_krfcw")
+animation = &"move_forward"
+autoplay = "move_forward"
+
+[node name="collider" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ynemx")
+
+[node name="attack_speed_timer" type="Timer" parent="."]
+one_shot = true
+
+[node name="dash_cooldown_timer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="dash_cooldown_timer" to="." method="_on_dash_cooldown_timer_timeout"]
