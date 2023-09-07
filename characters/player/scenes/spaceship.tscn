@@ -1,19 +1,22 @@
-[gd_scene load_steps=15 format=3 uid="uid://t0cvaldpu21j"]
+[gd_scene load_steps=19 format=3 uid="uid://t0cvaldpu21j"]
 
 [ext_resource type="Script" path="res://characters/player/scripts/spaceship.gd" id="1_i27ud"]
+[ext_resource type="Texture2D" uid="uid://dg4c2p42hcsw6" path="res://resources/spaceships/bee-ship-black.png" id="2_b8kgy"]
 [ext_resource type="Texture2D" uid="uid://q7iccct3vs42" path="res://resources/spaceships/spaceshp-main.png" id="2_ojwkv"]
+[ext_resource type="PackedScene" uid="uid://dg78mgq3cekq5" path="res://weapons/weapon.tscn" id="4_u3qfp"]
+[ext_resource type="PackedScene" uid="uid://djykmaj2oplxn" path="res://characters/player/scenes/hurtbox.tscn" id="5_h6smq"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ohn3b"]
-atlas = ExtResource("2_ojwkv")
-region = Rect2(256, 0, 64, 64)
+[sub_resource type="AtlasTexture" id="AtlasTexture_gvfe7"]
+atlas = ExtResource("2_b8kgy")
+region = Rect2(0, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_owp02"]
-atlas = ExtResource("2_ojwkv")
-region = Rect2(320, 0, 64, 64)
+[sub_resource type="AtlasTexture" id="AtlasTexture_qmii1"]
+atlas = ExtResource("2_b8kgy")
+region = Rect2(32, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_mg81q"]
-atlas = ExtResource("2_ojwkv")
-region = Rect2(384, 0, 64, 64)
+[sub_resource type="AtlasTexture" id="AtlasTexture_2t3wk"]
+atlas = ExtResource("2_b8kgy")
+region = Rect2(64, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qxqof"]
 atlas = ExtResource("2_ojwkv")
@@ -47,13 +50,13 @@ region = Rect2(0, 0, 64, 64)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_ohn3b")
+"texture": SubResource("AtlasTexture_gvfe7")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_owp02")
+"texture": SubResource("AtlasTexture_qmii1")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_mg81q")
+"texture": SubResource("AtlasTexture_2t3wk")
 }],
 "loop": true,
 "name": &"move_forward",
@@ -97,7 +100,10 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ynemx"]
-radius = 10.4403
+radius = 9.05539
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_a5jk7"]
+radius = 11.0454
 
 [node name="ship" type="CharacterBody2D"]
 collision_mask = 4
@@ -118,4 +124,12 @@ one_shot = true
 [node name="dash_cooldown_timer" type="Timer" parent="."]
 one_shot = true
 
+[node name="weapon" parent="." instance=ExtResource("4_u3qfp")]
+
+[node name="hurtbox" parent="." instance=ExtResource("5_h6smq")]
+
+[node name="collider" type="CollisionShape2D" parent="hurtbox"]
+shape = SubResource("CircleShape2D_a5jk7")
+
 [connection signal="timeout" from="dash_cooldown_timer" to="." method="_on_dash_cooldown_timer_timeout"]
+[connection signal="body_entered" from="hurtbox" to="." method="_on_hurtbox_body_entered"]

@@ -1,14 +1,23 @@
-[gd_scene load_steps=11 format=3 uid="uid://b12y1mtt1wy1q"]
+[gd_scene load_steps=12 format=3 uid="uid://b12y1mtt1wy1q"]
 
 [ext_resource type="Script" path="res://characters/enemies/asteroids/scripts/asteroid_05.gd" id="1_gogqy"]
-[ext_resource type="Texture2D" uid="uid://2mnvryexetc6" path="res://resources/asteroids/asteroid_05.png" id="2_idwbs"]
-[ext_resource type="Shader" uid="uid://clqgmkdcicgh4" path="res://shaders/hit_effect.tres" id="2_rytg2"]
+[ext_resource type="Material" uid="uid://crbsx65ef4n10" path="res://shaders/asteroid_01.tres" id="2_kue04"]
+[ext_resource type="Texture2D" uid="uid://b7kosjsjntqmb" path="res://resources/asteroids/asteroids.png" id="3_kelfh"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_6iyt6"]
-resource_local_to_scene = true
-shader = ExtResource("2_rytg2")
-shader_parameter/enabled = true
-shader_parameter/tint = Color(1, 1, 1, 1)
+[sub_resource type="AtlasTexture" id="AtlasTexture_0f6gd"]
+atlas = ExtResource("3_kelfh")
+region = Rect2(0, 64, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_goxvj"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0f6gd")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_706cc"]
 radius = 17.0
@@ -49,7 +58,7 @@ tracks/0/keys = {
 "values": [true, false]
 }
 
-[sub_resource type="Animation" id="Animation_ro527"]
+[sub_resource type="Animation" id="Animation_imfmb"]
 resource_name = "idle"
 length = 0.2
 tracks/0/type = "value"
@@ -69,17 +78,17 @@ tracks/0/keys = {
 _data = {
 "RESET": SubResource("Animation_nef8n"),
 "flash": SubResource("Animation_w0lxg"),
-"idle": SubResource("Animation_ro527")
+"idle": SubResource("Animation_imfmb")
 }
 
 [node name="asteroid" type="CharacterBody2D"]
 collision_layer = 2
 script = ExtResource("1_gogqy")
 
-[node name="sprite" type="Sprite2D" parent="."]
+[node name="sprite" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
-material = SubResource("ShaderMaterial_6iyt6")
-texture = ExtResource("2_idwbs")
+material = ExtResource("2_kue04")
+sprite_frames = SubResource("SpriteFrames_goxvj")
 
 [node name="collision_shape" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_706cc")
@@ -92,6 +101,7 @@ collision_mask = 32
 shape = SubResource("CapsuleShape2D_5h78p")
 
 [node name="visibility_notifier" type="VisibleOnScreenNotifier2D" parent="."]
+modulate = Color(0, 0, 0, 1)
 
 [node name="hit_flash_animation" type="AnimationPlayer" parent="."]
 libraries = {

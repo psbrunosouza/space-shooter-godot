@@ -3,13 +3,19 @@ extends SpaceshipControl
 @onready var sprite: AnimatedSprite2D = $sprite
 @onready var attack_speed_timer: Timer = $attack_speed_timer
 @onready var dash_cooldown_timer: Timer = $dash_cooldown_timer
-var bullet_prepare: PackedScene = load("res://bullets/scenes/bullet_prepare.tscn")
+@onready var weapon: Node2D = $weapon
+@onready var hud: Node2D = get_parent().get_node("hud")
+
+var pistol: PackedScene = load("res://weapons/pistol.tscn")
 var dash_ghost_sprite: PackedScene = load("res://characters/player/scenes/spaceship_ghost.tscn")
+
 var bullet: BulletPicker
 var is_dashing: bool = false
 
 func _ready():
+	hud.emit_signal("set_life", life, max_life)
 	bullet = BulletPicker.new()
+	weapon.set_weapon(pistol)
 
 func _physics_process(_delta):
 	var horizontal_direction = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
@@ -22,7 +28,7 @@ func _physics_process(_delta):
 func movement(horizontal_direction: float, vertical_direction: float):
 	velocity.x = horizontal_direction
 	velocity.y = vertical_direction
-	apply_animation(horizontal_direction)
+#	apply_animation(horizontal_direction)
 	velocity = velocity.normalized() * speed
 
 func apply_animation(direction):
@@ -32,22 +38,11 @@ func apply_animation(direction):
 		sprite.play("move_right")
 	else:
 		sprite.play("move_forward")
-
-func instantiate_bullet(instance):
-	instance.position = Vector2(position.x, position.y - 20)
-	get_tree().current_scene.get_node("spawn_bullets").add_child(instance)
-	
-func instantiate_bullet_prepare_to_shot(instance):
-	instance.position = Vector2(position.x, position.y - 20)
-	get_tree().current_scene.get_node("spawn_bullet_prepare").add_child(instance)
 	
 func attack():
 	if Input.is_action_just_pressed("shot") && attack_speed_timer.is_stopped():
-		var bullet_instance = Bullet.current_bullet.instantiate()
-		var bullet_prepare_instance = bullet_prepare.instantiate()
-		instantiate_bullet_prepare_to_shot(bullet_instance)
-		instantiate_bullet(bullet_prepare_instance)
-		attack_speed_timer.start(bullet_instance.attack_speed)
+		weapon.shoot()
+		attack_speed_timer.start(weapon.loaded_weapon.attack_speed)
 
 func dash(horizontal_direction: float, vertical_direction: float):
 	if Input.is_action_just_pressed("dash") && !is_dashing:
@@ -56,7 +51,6 @@ func dash(horizontal_direction: float, vertical_direction: float):
 		var vertical_dash_direction = position.y + vertical_direction *  80
 		create_tween().tween_property(self, "position", Vector2(horizontal_dash_direction, vertical_dash_direction), 0.1)
 		dash_cooldown_timer.start(dash_cooldown)
-		
 		
 	if is_dashing:
 		var ghost_sprite_instance = dash_ghost_sprite.instantiate()
@@ -67,3 +61,11 @@ func dash(horizontal_direction: float, vertical_direction: float):
 
 func _on_dash_cooldown_timer_timeout():
 	is_dashing = false
+
+func _on_hurtbox_body_entered(body):
+	if life > 0:
+		life -= 1
+		if life <= 0:
+			queue_free()
+		
+	hud.emit_signal("set_life", life, max_life)

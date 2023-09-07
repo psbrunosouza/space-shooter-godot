@@ -30,5 +30,3 @@ func movement(delta: float):
 	
 	velocity.y += min_vertical_speed * delta
 	velocity.y = clamp(velocity.y, -max_vertical_speed, max_vertical_speed)
-	
-	rotation_degrees += rotation_rate * delta

@@ -4,10 +4,10 @@ extends Node2D
 var next_spawn_time_max = 5.0
 var next_spawn_time_min = 2.0
 var asteroids = [
-#	preload("res://characters/enemies/asteroids/scenes/asteroid_01.tscn"),
-#	preload("res://characters/enemies/asteroids/scenes/asteroid_02.tscn"),
-#	preload("res://characters/enemies/asteroids/scenes/asteroid_03.tscn"),
-#	preload("res://characters/enemies/asteroids/scenes/asteroid_04.tscn"),
+	preload("res://characters/enemies/asteroids/scenes/asteroid_01.tscn"),
+	preload("res://characters/enemies/asteroids/scenes/asteroid_02.tscn"),
+	preload("res://characters/enemies/asteroids/scenes/asteroid_03.tscn"),
+	preload("res://characters/enemies/asteroids/scenes/asteroid_04.tscn"),
 	preload("res://characters/enemies/asteroids/scenes/asteroid_05.tscn"),                           
 ] 
 

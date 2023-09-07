@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://djykmaj2oplxn"]
+
+[node name="hurtbox" type="Area2D"]
+collision_layer = 64
+collision_mask = 2

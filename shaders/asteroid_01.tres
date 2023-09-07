@@ -5,5 +5,5 @@
 [resource]
 resource_local_to_scene = true
 shader = ExtResource("1_2mofy")
-shader_parameter/BooleanParameter = false
+shader_parameter/enabled = true
 shader_parameter/tint = Color(1, 1, 1, 1)
