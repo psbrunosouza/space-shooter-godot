@@ -18,7 +18,7 @@ func set_weapon(weapon: String) -> void:
 	instance.position = Vector2(0, -20)
 	add_child(instance)
 	
-func shoot(player: CharacterBody2D) -> void:
+func shoot() -> void:
 	var weapon_sprite: AnimatedSprite2D = get_child(0).get_node("sprite")
 	var weapon = get_node("pistol")
 	var bullet: CharacterBody2D = WeaponManager.bullet.instantiate()

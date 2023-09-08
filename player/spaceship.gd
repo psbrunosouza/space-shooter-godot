@@ -1,11 +1,14 @@
 extends SpaceshipControl
 
+@onready var hud: Node2D = get_parent().get_node("hud")
 @onready var sprite: AnimatedSprite2D = $sprite
 @onready var attack_speed_timer: Timer = $attack_speed_timer
 @onready var dash_cooldown_timer: Timer = $dash_cooldown_timer
-@onready var knockback_timer: Timer = $knockback_timer
+@onready var invencibility_timer: Timer = $invencibility_timer
 @onready var weapon: Node2D = $weapon
-@onready var hud: Node2D = get_parent().get_node("hud")
+@onready var animation_player: AnimationPlayer = $animation_player
+@onready var hurtbox: CollisionShape2D = $hurtbox/collider
+@onready var collider: CollisionShape2D = $collider
 
 var dash_ghost_sprite: PackedScene = load("res://player/spaceship_ghost.tscn")
 var explosion: PackedScene = load("res://effects/explosion.tscn")
@@ -20,6 +23,7 @@ var vertical_direction
 var knockback = Vector2.ZERO
 
 func _ready():
+	sprite.modulate = Color(1,1,1,1)
 	hud.emit_signal("set_life", life, max_life)
 	weapon.set_weapon("pistol")
 
@@ -33,39 +37,35 @@ func _physics_process(delta):
 	velocity = velocity * delta
 	move_and_collide(velocity)
 
-func movement(horizontal_direction: float, vertical_direction: float):
-	if !(horizontal_direction == 0 && vertical_direction == 0):
-		velocity = Vector2(horizontal_direction, vertical_direction)
+func movement(x_direction: float, y_direction: float):
+	if !(x_direction == 0 && y_direction == 0):
+		velocity = Vector2(x_direction, y_direction)
 		velocity = velocity.normalized() * speed
 	else: 
 		velocity = Vector2.ZERO
 
 	if knockback != Vector2.ZERO:
 		velocity = knockback
-
-func apply_animation(direction):
-	if direction == -1:
-		sprite.play("move_left")
-	elif direction == 1:
-		sprite.play("move_right")
-	else:
-		sprite.play("move_forward")
 	
 func attack():
 	if Input.is_action_just_pressed("shot") && attack_speed_timer.is_stopped():
-		weapon.shoot(self)
+		weapon.shoot()
 		attack_speed_timer.start(WeaponManager.attack_speed)
 
 func hit_player(knockback_direction: Vector2, duration = 0.25):
-	if knockback_direction != Vector2.ZERO:
+	if knockback_direction != Vector2.ZERO && invencibility_timer.is_stopped():
 		knockback = knockback_direction
+		animation_player.play("invencible")
+		hurtbox.set_deferred("disabled", true)
+		collider.set_deferred("disabled", true)
 		create_tween().tween_property(self, "knockback", Vector2(0, 0), duration)
+		invencibility_timer.start(invencibility_time)
 
-func dash(horizontal_direction: float, vertical_direction: float):
+func dash(x_direction: float, y_direction: float):
 	if Input.is_action_just_pressed("dash") && !is_dashing:
 		is_dashing = true
-		var horizontal_dash_direction = position.x + horizontal_direction * 80
-		var vertical_dash_direction = position.y + vertical_direction *  80
+		var horizontal_dash_direction = position.x + x_direction * 80
+		var vertical_dash_direction = position.y + y_direction *  80
 		create_tween().tween_property(self, "position", Vector2(horizontal_dash_direction, vertical_dash_direction), 0.1)
 		dash_cooldown_timer.start(dash_cooldown)
 		
@@ -91,3 +91,10 @@ func _on_hurtbox_body_entered(_body):
 		queue_free()
 		
 	hud.emit_signal("set_life", life, max_life)
+
+
+func _on_invencibility_timer_timeout():
+	animation_player.stop()
+	sprite.modulate = Color(1,1,1,1)
+	hurtbox.set_deferred("disabled", false)
+	collider.set_deferred("disabled", false)
