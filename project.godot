@@ -11,13 +11,13 @@ config_version=5
 [application]
 
 config/name="Spaceshooter"
-run/main_scene="res://levels/level_01/scenes/level_01.tscn"
+run/main_scene="res://levels/level_01/level_01.tscn"
 config/features=PackedStringArray("4.0", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
-Bullet="*res://bullets/scripts/bullet.gd"
+WeaponManager="*res://weapons/weapon_manager.gd"
 
 [display]
 

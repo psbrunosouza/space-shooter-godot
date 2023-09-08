@@ -1,0 +1,99 @@
+[gd_scene load_steps=10 format=3 uid="uid://r7fat0ejk4pl"]
+
+[ext_resource type="Texture2D" uid="uid://dkf465egvhv4s" path="res://resources/weapons/weapon-pistol.png" id="1_dkul8"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_40ku3"]
+atlas = ExtResource("1_dkul8")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0dids"]
+atlas = ExtResource("1_dkul8")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5usun"]
+atlas = ExtResource("1_dkul8")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5dwlm"]
+atlas = ExtResource("1_dkul8")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6gdcd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_40ku3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0dids")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5usun")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_40ku3")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5dwlm")
+}],
+"loop": false,
+"name": &"idle",
+"speed": 12.0
+}]
+
+[sub_resource type="Animation" id="Animation_cgitf"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_n1fqm"]
+resource_name = "anim"
+length = 2.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(-5, -5), Vector2(-5, 5), Vector2(5, -5), Vector2(5, 5)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_d3goo"]
+_data = {
+"RESET": SubResource("Animation_cgitf"),
+"anim": SubResource("Animation_n1fqm")
+}
+
+[node name="pistol" type="Node2D"]
+
+[node name="sprite" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_6gdcd")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="anim_player" type="AnimationPlayer" parent="."]
+autoplay = "anim"
+libraries = {
+"": SubResource("AnimationLibrary_d3goo")
+}

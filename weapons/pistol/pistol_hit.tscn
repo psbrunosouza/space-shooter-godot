@@ -1,0 +1,53 @@
+[gd_scene load_steps=8 format=3 uid="uid://batg52cxsftmx"]
+
+[ext_resource type="Script" path="res://weapons/bullet_basic_hit.gd" id="1_lpio4"]
+[ext_resource type="Texture2D" uid="uid://dnpgav5lldri4" path="res://resources/bullets/bullet_basic_hit.png" id="2_46wo6"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vohwb"]
+atlas = ExtResource("2_46wo6")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fq68j"]
+atlas = ExtResource("2_46wo6")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pgp3w"]
+atlas = ExtResource("2_46wo6")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fnkum"]
+atlas = ExtResource("2_46wo6")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_cdx6j"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vohwb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fq68j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pgp3w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fnkum")
+}],
+"loop": false,
+"name": &"start",
+"speed": 12.0
+}]
+
+[node name="bullet_basic_hit" type="Node2D"]
+script = ExtResource("1_lpio4")
+
+[node name="sprite" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_cdx6j")
+animation = &"start"
+autoplay = "start"
+frame = 3
+frame_progress = 1.0
+
+[connection signal="animation_finished" from="sprite" to="." method="_on_sprite_animation_finished"]

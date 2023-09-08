@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://ctrhxoiwn1vug"]
+
+[ext_resource type="PackedScene" uid="uid://dgx8jwni6c5bh" path="res://levels/level_01/background.tscn" id="1_ks3v8"]
+[ext_resource type="Script" path="res://enemies/spawn_asteroids.gd" id="2_veast"]
+[ext_resource type="PackedScene" uid="uid://t0cvaldpu21j" path="res://player/spaceship.tscn" id="3_fc13h"]
+[ext_resource type="PackedScene" uid="uid://bqgi3tbutbm28" path="res://hud/hud.tscn" id="4_ufka5"]
+
+[node name="world_scene_01" type="Node2D"]
+
+[node name="background_level_01" parent="." instance=ExtResource("1_ks3v8")]
+visible = false
+
+[node name="spawn_asteroids" type="Node2D" parent="."]
+script = ExtResource("2_veast")
+
+[node name="spawn_asteroids_timer" type="Timer" parent="spawn_asteroids"]
+
+[node name="spawn_ship_ghosts" type="Node2D" parent="."]
+
+[node name="ship" parent="." instance=ExtResource("3_fc13h")]
+position = Vector2(222, 208)
+
+[node name="spawn_bullets" type="Node2D" parent="."]
+
+[node name="spawn_explosion" type="Node2D" parent="."]
+
+[node name="spawn_ship_explosion" type="Node2D" parent="."]
+
+[node name="hud" parent="." instance=ExtResource("4_ufka5")]
+
+[connection signal="timeout" from="spawn_asteroids/spawn_asteroids_timer" to="spawn_asteroids" method="on_spawn_asteroids_timer_timeout"]
