@@ -3,6 +3,7 @@ extends SpaceshipControl
 @onready var sprite: AnimatedSprite2D = $sprite
 @onready var attack_speed_timer: Timer = $attack_speed_timer
 @onready var dash_cooldown_timer: Timer = $dash_cooldown_timer
+@onready var knockback_timer: Timer = $knockback_timer
 @onready var weapon: Node2D = $weapon
 @onready var hud: Node2D = get_parent().get_node("hud")
 
@@ -10,24 +11,37 @@ var dash_ghost_sprite: PackedScene = load("res://player/spaceship_ghost.tscn")
 var explosion: PackedScene = load("res://effects/explosion.tscn")
 
 var is_dashing: bool = false
+var is_knockbacking: bool = false
+var was_hitted: bool = false
+
+var horizontal_direction
+var vertical_direction
+
+var knockback = Vector2.ZERO
 
 func _ready():
 	hud.emit_signal("set_life", life, max_life)
 	weapon.set_weapon("pistol")
 
-func _physics_process(_delta):
-	var horizontal_direction = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
-	var vertical_direction = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
+func _physics_process(delta):
+	horizontal_direction = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
+	vertical_direction = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
 	movement(horizontal_direction, vertical_direction)
 	dash(horizontal_direction, vertical_direction)
 	attack()
-	move_and_slide()
+	
+	velocity = velocity * delta
+	move_and_collide(velocity)
 
 func movement(horizontal_direction: float, vertical_direction: float):
-	velocity.x = horizontal_direction
-	velocity.y = vertical_direction
-#	apply_animation(horizontal_direction)
-	velocity = velocity.normalized() * speed
+	if !(horizontal_direction == 0 && vertical_direction == 0):
+		velocity = Vector2(horizontal_direction, vertical_direction)
+		velocity = velocity.normalized() * speed
+	else: 
+		velocity = Vector2.ZERO
+
+	if knockback != Vector2.ZERO:
+		velocity = knockback
 
 func apply_animation(direction):
 	if direction == -1:
@@ -41,6 +55,11 @@ func attack():
 	if Input.is_action_just_pressed("shot") && attack_speed_timer.is_stopped():
 		weapon.shoot(self)
 		attack_speed_timer.start(WeaponManager.attack_speed)
+
+func hit_player(knockback_direction: Vector2, duration = 0.25):
+	if knockback_direction != Vector2.ZERO:
+		knockback = knockback_direction
+		create_tween().tween_property(self, "knockback", Vector2(0, 0), duration)
 
 func dash(horizontal_direction: float, vertical_direction: float):
 	if Input.is_action_just_pressed("dash") && !is_dashing:
@@ -63,6 +82,9 @@ func _on_dash_cooldown_timer_timeout():
 func _on_hurtbox_body_entered(_body):
 	if life > 0:
 		life -= 1
+		var opposite_x_direction = (horizontal_direction * -1)
+		var opposite_y_direction = (vertical_direction * -1)
+		hit_player(Vector2(opposite_x_direction * 300, opposite_y_direction * 300))
 	
 	if life <= 0:
 		InstatiateNode.new(get_tree().current_scene, explosion, position, "spawn_ship_explosion")
