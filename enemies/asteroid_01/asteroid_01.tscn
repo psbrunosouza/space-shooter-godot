@@ -1,18 +1,14 @@
-[gd_scene load_steps=12 format=3 uid="uid://mm526ovr34j7"]
+[gd_scene load_steps=11 format=3 uid="uid://mm526ovr34j7"]
 
 [ext_resource type="Script" path="res://enemies/asteroid_01/asteroid_01.gd" id="1_3b8cp"]
 [ext_resource type="Material" uid="uid://crbsx65ef4n10" path="res://shaders/asteroid_01.tres" id="2_3yglr"]
-[ext_resource type="Texture2D" uid="uid://bc7ivkp4wu1cc" path="res://resources/weapons/asteroids.png" id="3_202e7"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_i0ptc"]
-atlas = ExtResource("3_202e7")
-region = Rect2(0, 0, 32, 32)
+[ext_resource type="Texture2D" uid="uid://bwbldjd4xbb67" path="res://resources/asteroids/asteroid_brown_01.png" id="3_b6sue"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_nevrn"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_i0ptc")
+"texture": ExtResource("3_b6sue")
 }],
 "loop": true,
 "name": &"default",
@@ -86,6 +82,7 @@ script = ExtResource("1_3b8cp")
 texture_filter = 1
 material = ExtResource("2_3yglr")
 sprite_frames = SubResource("SpriteFrames_nevrn")
+frame_progress = 0.988861
 
 [node name="collision_shape" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_ciqh6")

@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://ctrhxoiwn1vug"]
+[gd_scene load_steps=6 format=3 uid="uid://ctrhxoiwn1vug"]
 
 [ext_resource type="PackedScene" uid="uid://dgx8jwni6c5bh" path="res://levels/level_01/background.tscn" id="1_ks3v8"]
+[ext_resource type="Script" path="res://levels/level_01/spawner_asteroids_01.gd" id="2_caswq"]
 [ext_resource type="Script" path="res://enemies/spawn_asteroids.gd" id="2_veast"]
 [ext_resource type="PackedScene" uid="uid://t0cvaldpu21j" path="res://player/spaceship.tscn" id="3_fc13h"]
 [ext_resource type="PackedScene" uid="uid://bqgi3tbutbm28" path="res://hud/hud.tscn" id="4_ufka5"]
@@ -9,6 +10,21 @@
 
 [node name="background_level_01" parent="." instance=ExtResource("1_ks3v8")]
 visible = false
+
+[node name="spawner_asteroids_group_01" type="Node2D" parent="." groups=["spawner_asteroids_group_01"]]
+script = ExtResource("2_caswq")
+
+[node name="spawner_asteroids_01" type="Marker2D" parent="spawner_asteroids_group_01"]
+position = Vector2(125, -16)
+
+[node name="spawner_asteroids_02" type="Marker2D" parent="spawner_asteroids_group_01"]
+position = Vector2(125, -48)
+
+[node name="spawner_asteroids_03" type="Marker2D" parent="spawner_asteroids_group_01"]
+position = Vector2(125, -80)
+
+[node name="spawner_asteroids_04" type="Marker2D" parent="spawner_asteroids_group_01"]
+position = Vector2(125, -112)
 
 [node name="spawn_asteroids" type="Node2D" parent="."]
 script = ExtResource("2_veast")
@@ -22,7 +38,7 @@ position = Vector2(222, 208)
 
 [node name="spawn_bullets" type="Node2D" parent="."]
 
-[node name="spawn_explosion" type="Node2D" parent="."]
+[node name="spawn_explosions" type="Node2D" parent="."]
 
 [node name="spawn_ship_explosion" type="Node2D" parent="."]
 

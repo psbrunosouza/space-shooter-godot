@@ -12,8 +12,9 @@ var asteroids = [
 ] 
 
 func _ready():
-	randomize()
-	spawn_asteroids_timer.start(next_spawn_time_max)
+#	randomize()
+#	spawn_asteroids_timer.start(next_spawn_time_max)
+	pass
 
 func spawn_asteroid(asteroid: PackedScene):
 	var view_rect := get_viewport_rect()

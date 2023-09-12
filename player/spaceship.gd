@@ -48,7 +48,7 @@ func movement(x_direction: float, y_direction: float):
 		velocity = knockback
 	
 func attack():
-	if Input.is_action_just_pressed("shot") && attack_speed_timer.is_stopped():
+	if Input.is_action_pressed("shot") && attack_speed_timer.is_stopped():
 		weapon.shoot()
 		attack_speed_timer.start(WeaponManager.attack_speed)
 

@@ -37,8 +37,20 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_ynemx"]
 radius = 9.05539
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_a5jk7"]
-radius = 11.0454
+[sub_resource type="Animation" id="Animation_sn3sk"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sprite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
 
 [sub_resource type="Animation" id="Animation_kauj0"]
 resource_name = "invencible"
@@ -57,33 +69,20 @@ tracks/0/keys = {
 "values": [Color(1, 1, 1, 1), Color(0, 0, 0, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_sn3sk"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("sprite:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(100, 100, 100, 1)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_2bjr1"]
 _data = {
 "RESET": SubResource("Animation_sn3sk"),
 "invencible": SubResource("Animation_kauj0")
 }
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_a5jk7"]
+radius = 11.0454
+
 [node name="ship" type="CharacterBody2D"]
 collision_mask = 4
 script = ExtResource("1_i27ud")
 
 [node name="sprite" type="AnimatedSprite2D" parent="."]
-modulate = Color(100, 100, 100, 1)
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_krfcw")
 animation = &"move_forward"
@@ -101,17 +100,17 @@ one_shot = true
 [node name="invencibility_timer" type="Timer" parent="."]
 one_shot = true
 
+[node name="animation_player" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_2bjr1")
+}
+
 [node name="weapon" parent="." instance=ExtResource("4_u3qfp")]
 
 [node name="hurtbox" parent="." instance=ExtResource("5_h6smq")]
 
 [node name="collider" type="CollisionShape2D" parent="hurtbox"]
 shape = SubResource("CircleShape2D_a5jk7")
-
-[node name="animation_player" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_2bjr1")
-}
 
 [connection signal="timeout" from="dash_cooldown_timer" to="." method="_on_dash_cooldown_timer_timeout"]
 [connection signal="timeout" from="invencibility_timer" to="." method="_on_invencibility_timer_timeout"]

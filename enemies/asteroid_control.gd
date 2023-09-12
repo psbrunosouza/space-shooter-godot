@@ -7,11 +7,12 @@ class_name AsteroidControl
 var explosion: PackedScene = load("res://effects/explosion.tscn")
 
 var life: int = 1
-var min_vertical_speed: float = 1500.0
-var max_vertical_speed: float = 2000.0
+var min_vertical_speed: float = 15000.0
+var max_vertical_speed: float = 15000.0
 var min_horizontal_speed: float = 1200.0
 var max_horizontal_speed: float = 1500.0
 var rotation_rate: float = 5.0
+var max_distance: float = 160.0
 var direction: int 
 
 func _ready():
@@ -26,21 +27,22 @@ func get_direction():
 
 func _physics_process(delta: float):
 	movement(delta)
-	move_and_collide(velocity)
 	
 func movement(delta: float): 
-	velocity.x += direction * min_horizontal_speed * delta
-	velocity.x = clamp(velocity.x, -max_horizontal_speed, max_horizontal_speed)
-	
-	velocity.y += min_vertical_speed * delta
-	velocity.y = clamp(velocity.y, -max_vertical_speed, max_vertical_speed)
-	
-	velocity = velocity * delta
+	var distance = sqrt(pow(get_viewport_rect().position.y, 2) + pow(position.y, 2))
+	if distance <= max_distance:
+		velocity.x += direction * min_horizontal_speed * delta
+		velocity.x = clamp(velocity.x, -max_horizontal_speed, max_horizontal_speed)
+		
+		velocity.y += min_vertical_speed * delta
+		velocity.y = clamp(velocity.y, -max_vertical_speed, max_vertical_speed)
+		velocity = velocity * delta
+		move_and_collide(velocity)
 
 func instantiate_explosion() -> void:
 	var explosion_instance = explosion.instantiate()
-	explosion_instance.position = position
-	get_tree().current_scene.get_node("spawn_explosion").add_child(explosion_instance)
+	explosion_instance.position = global_position
+	get_tree().current_scene.get_node("spawn_explosions").add_child(explosion_instance)
 	
 func instantiate_bullet_hit(body) -> void:
 	var hit_instance = WeaponManager.hit.instantiate()
