@@ -11,13 +11,13 @@ config_version=5
 [application]
 
 config/name="Spaceshooter"
-run/main_scene="res://levels/level_01/level_01.tscn"
-config/features=PackedStringArray("4.0", "Forward Plus")
+run/main_scene="res://maps/map_01/map_01.tscn"
+config/features=PackedStringArray("4.1", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
-WeaponManager="*res://weapons/weapon_manager.gd"
+WeaponManager="*res://scenes/weapons/weapon_manager.gd"
 
 [display]
 
@@ -58,4 +58,4 @@ dash={
 
 [rendering]
 
-environment/defaults/default_clear_color=Color(0.184314, 0.168627, 0.360784, 1)
+environment/defaults/default_clear_color=Color(0.117647, 0.329412, 0.431373, 1)
