@@ -43,7 +43,7 @@ animations = [{
 size = Vector2(4, 4)
 
 [node name="bug_bullet" type="CharacterBody2D"]
-collision_layer = 64
+collision_layer = 32
 collision_mask = 65
 script = ExtResource("1_h8dmy")
 
@@ -57,5 +57,6 @@ frame_progress = 0.881054
 shape = SubResource("RectangleShape2D_6s3k8")
 
 [node name="screen_notifier" type="VisibleOnScreenNotifier2D" parent="."]
+scale = Vector2(0.3, 0.3)
 
 [connection signal="screen_exited" from="screen_notifier" to="." method="_on_screen_notifier_screen_exited"]

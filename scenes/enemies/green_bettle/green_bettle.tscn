@@ -1,7 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://exi1o4lttf26"]
+[gd_scene load_steps=11 format=3 uid="uid://exi1o4lttf26"]
 
 [ext_resource type="Script" path="res://scenes/enemies/green_bettle/green_bettle.gd" id="1_ya87n"]
 [ext_resource type="Texture2D" uid="uid://30vy2x1xg2n3" path="res://assets/enemies/enemies.png" id="2_ojxip"]
+[ext_resource type="Script" path="res://scenes/enemies/green_bettle/movement.gd" id="3_rv86p"]
+[ext_resource type="Script" path="res://scenes/enemies/green_bettle/attack.gd" id="4_7djhi"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_18110"]
 atlas = ExtResource("2_ojxip")
@@ -60,11 +62,17 @@ collision_mask = 32
 position = Vector2(0, -2)
 shape = SubResource("CircleShape2D_6if6i")
 
-[node name="shoot_timer" type="Timer" parent="."]
-one_shot = true
-
 [node name="screen_notifier" type="VisibleOnScreenNotifier2D" parent="."]
 
+[node name="movement" type="Node2D" parent="."]
+script = ExtResource("3_rv86p")
+
+[node name="attack" type="Node2D" parent="."]
+script = ExtResource("4_7djhi")
+
+[node name="shoot_timer" type="Timer" parent="attack"]
+one_shot = true
+
 [connection signal="body_entered" from="hit_box" to="." method="_on_hit_box_body_entered"]
-[connection signal="timeout" from="shoot_timer" to="." method="_on_timer_timeout"]
 [connection signal="screen_exited" from="screen_notifier" to="." method="_on_screen_notifier_screen_exited"]
+[connection signal="timeout" from="attack/shoot_timer" to="attack" method="_on_shoot_timer_timeout"]

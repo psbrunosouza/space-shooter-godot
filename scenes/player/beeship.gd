@@ -8,10 +8,12 @@ extends SpaceshipControl
 
 var explosion: PackedScene = load("res://effects/explosion.tscn")
 
+var type: String = "player"
+
 func _ready():
 	hud.emit_signal("set_life", life, max_life)
 
-func _on_hurtbox_body_entered(_body):
+func _on_hurtbox_body_entered(body):
 	if life > 0:
 		life -= 1
 	
@@ -22,6 +24,9 @@ func _on_hurtbox_body_entered(_body):
 		queue_free()
 		
 	hud.emit_signal("set_life", life, max_life)
+
+	if body.type == "bullet":
+		body.queue_free()
 
 
 func _on_invencibility_timer_timeout():

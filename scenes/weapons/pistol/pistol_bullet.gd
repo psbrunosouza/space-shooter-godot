@@ -10,5 +10,4 @@ func _physics_process(delta: float) -> void:
 	move_and_collide(velocity)
 
 func _on_visibility_notifier_screen_exited():
-	print("test")
 	queue_free() 

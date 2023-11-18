@@ -17,6 +17,8 @@ func set_weapon(weapon: String) -> void:
 	WeaponManager.weapon = weapons[weapon]["current"] as PackedScene
 	WeaponManager.bullet = weapons[weapon]["bullet"] as PackedScene
 	WeaponManager.hit = weapons[weapon]["hit"] as PackedScene
+	WeaponManager.damage = weapons[weapon]["damage"] as int
+	WeaponManager.attack_speed = weapons[weapon]["attack_speed"] as float
 	var instance = WeaponManager.weapon.instantiate()
 	instance.position = Vector2(0, -20)
 	add_child(instance)

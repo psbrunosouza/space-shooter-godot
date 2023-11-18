@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 var bullet_speed: float = 10000.0
 var bullet_speed_max: float = 10000.0
+var type: String = "bullet"
 
 func _physics_process(delta: float) -> void:
 	velocity.y += bullet_speed * delta
